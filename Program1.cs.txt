@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace AccountSystem
+{
+    internal class Program
+    {
+        class BankAccount
+        {
+            public int AccountNum;
+            public string Name;
+            public int Balance;
+
+            // Constructor
+            public BankAccount(int an, string nme, int b)
+            {
+                AccountNum = an;
+                Name = nme;
+                Balance = b;
+            }
+
+            // Function to display account info
+            public void Display()
+            {
+                Console.WriteLine("Account Number: " + AccountNum);
+                Console.WriteLine("Name: " + Name);
+                Console.WriteLine("Balance: " + Balance);
+                Console.WriteLine("-----------------------------");
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            List<BankAccount> accounts = new List<BankAccount>();
+
+            Console.WriteLine("...........Bank Management System.......");
+            Console.WriteLine("1 - Open a new account");
+            Console.WriteLine("2 - Withdraw money");
+            Console.WriteLine("3 - Show all account details");
+            Console.WriteLine("4 - Exit");
+
+            Console.Write("Enter your option: ");
+            int option = int.Parse(Console.ReadLine());
+
+            if (option == 1)
+            {
+                Console.Write("Enter Account Number: ");
+                int account = int.Parse(Console.ReadLine());
+
+                Console.Write("Enter Name: ");
+                string name = Console.ReadLine();
+
+                Console.Write("Enter Initial Deposit: ");
+                int balance = int.Parse(Console.ReadLine());
+
+                BankAccount acc = new BankAccount(account, name, balance);
+                accounts.Add(acc);
+
+                Console.WriteLine("Account Created Successfully!\n");
+            }
+            else if (option == 2)
+            {
+                Console.Write("Enter Account Number: ");
+                int accNum = int.Parse(Console.ReadLine());
+
+                BankAccount found = null;
+                foreach (var acc in accounts)
+                {
+                    if (acc.AccountNum == accNum)
+                    {
+                        found = acc;
+                        break;
+                    }
+                }
+
+                if (found != null)
+                {
+                    Console.Write("Enter amount to withdraw: ");
+                    int xamount = int.Parse(Console.ReadLine());
+
+                    if (xamount <= found.Balance)
+                    {
+                        found.Balance -= xamount;
+                        Console.WriteLine("Withdraw Successful. New Balance = " + found.Balance);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid! Not enough balance.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Account not found!");
+                }
+            }
+            else if (option == 3)
+            {
+                if (accounts.Count == 0)
+                {
+                    Console.WriteLine("No accounts available.");
+                }
+                else
+                {
+                    foreach (var acc in accounts)
+                    {
+                        acc.Display();
+                    }
+                }
+            }
+            else if (option == 4)
+            {
+                Console.WriteLine("Exiting...");
+            }
+            else
+            {
+                Console.WriteLine("Invalid Option!");
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+

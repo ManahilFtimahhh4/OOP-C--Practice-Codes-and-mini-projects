@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace library
+{
+    internal class Program
+    {
+        class book
+        {
+            public int bookid;
+            public string title;
+            public string author;
+            public book(int id, string t, string name)
+            {
+                bookid = id;
+                title = t;
+                author = name;
+            }
+            public void display()
+            {
+                Console.WriteLine("the book id is.." + ""+"" + bookid + "the title of this book is..." + "" + title + "author name.." + author);
+            }
+        }
+        static void Main(string[] args)
+        {
+            book b1 = new book(1, "c#","hassan");
+            b1.display();
+            book b2 = new book(2, "c++", "mirza");
+            b2.display();
+            book b3 = new book(3, "html", "french");
+            b3.display();
+        }
+    }
+}

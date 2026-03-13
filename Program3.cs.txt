@@ -1,0 +1,72 @@
+﻿using System;
+
+namespace transaction
+{
+    class Transaction
+    {
+        public int transactionid;
+        public string productname;
+        public int amount;
+        public string date;
+        public string time;
+
+      
+        public Transaction(int transactid, string product, int rate, string datein, string timein)
+        {
+            transactionid = transactid;
+            productname = product;
+            amount = rate;
+            date = datein;
+            time = timein;
+        }
+
+        public Transaction(Transaction t)
+        {
+            transactionid = t.transactionid;
+            productname = t.productname;
+            amount = t.amount;
+            date = t.date;
+            time = t.time;
+        }
+
+        public void record()
+        {
+            Console.WriteLine("Transaction ID: " + transactionid);
+            Console.WriteLine("Product Name: " + productname);
+            Console.WriteLine("Amount: " + amount);
+            Console.WriteLine("Date: " + date);
+            Console.WriteLine("Time: " + time);
+            Console.WriteLine("--------------------------------");
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+         
+            Transaction p1 = new Transaction(10, "Chocolate", 230, "14 March", "1pm");
+            Console.WriteLine("Original Transaction (p1):");
+            p1.record();
+
+          
+            Transaction p2 = new Transaction(p1);
+            Console.WriteLine("Copied Transaction (p2):");
+            p2.record();
+
+         
+            p1.productname = "Candy";
+            p1.amount = 500;
+
+            p2.productname = "Biscuits";
+            p2.amount = 50;
+
+            Console.WriteLine("After making changes:");
+            Console.WriteLine("Transaction p1:");
+            p1.record();
+
+            Console.WriteLine("Transaction p2:");
+            p2.record();
+        }
+    }
+}

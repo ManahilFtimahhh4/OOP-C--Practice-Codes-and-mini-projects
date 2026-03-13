@@ -1,0 +1,152 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace SignUpSignInApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = "users.txt"; 
+            List<MUser> users = MUser.LoadFromFile(path);
+
+            while (true)
+            {
+                Console.WriteLine("\n--- SignUp / SignIn System ---");
+                Console.WriteLine("1. SignUp");
+                Console.WriteLine("2. SignIn");
+                Console.WriteLine("3. Exit");
+                Console.Write("Enter choice: ");
+                int choice = int.Parse(Console.ReadLine());
+
+                if (choice == 1)
+                {
+                  
+                    Console.Write("Enter Username: ");
+                    string username = Console.ReadLine();
+
+                    Console.Write("Enter Password: ");
+                    string password = Console.ReadLine();
+
+                    Console.Write("Enter Role (admin/user): ");
+                    string role = Console.ReadLine();
+
+                    MUser newUser = new MUser(username, password, role);
+                    if (MUser.SignUp(newUser, users, path))
+                    {
+                        Console.WriteLine("User registered successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Username already exists! Try again.");
+                    }
+                }
+                else if (choice == 2)
+                {
+                 
+                    Console.Write("Enter Username: ");
+                    string username = Console.ReadLine();
+
+                    Console.Write("Enter Password: ");
+                    string password = Console.ReadLine();
+
+                    string role = MUser.SignIn(username, password, users);
+                    if (role != null)
+                    {
+                        Console.WriteLine($"Login successful! Your role: {role}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid credentials! Try again.");
+                    }
+                }
+                else if (choice == 3)
+                {
+                    Console.WriteLine("Exiting program...");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice! Try again.");
+                }
+            }
+        }
+    }
+
+    class MUser
+    {
+        public string Username;
+        public string Password;
+        public string Role;
+
+        public MUser(string username, string password, string role)
+        {
+            Username = username;
+            Password = password;
+            Role = role;
+        }
+
+ 
+        public static List<MUser> LoadFromFile(string path)
+        {
+            List<MUser> users = new List<MUser>();
+            if (File.Exists(path))
+            {
+                string[] lines = File.ReadAllLines(path);
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] parts = lines[i].Split(',');
+                    if (parts.Length == 3)
+                    {
+                        MUser u = new MUser(parts[0], parts[1], parts[2]);
+                        users.Add(u);
+                    }
+                }
+            }
+            return users;
+        }
+
+      
+        public static void SaveToFile(List<MUser> users, string path)
+        {
+            List<string> lines = new List<string>();
+            for (int i = 0; i < users.Count; i++)
+            {
+                lines.Add(users[i].Username + "," + users[i].Password + "," + users[i].Role);
+            }
+            File.WriteAllLines(path, lines);
+        }
+
+     
+        public static bool SignUp(MUser newUser, List<MUser> users, string path)
+        {
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (users[i].Username == newUser.Username) 
+                {
+                    return false;
+                }
+            }
+            users.Add(newUser);
+            SaveToFile(users, path);
+            return true;
+        }
+
+      
+        public static string SignIn(string username, string password, List<MUser> users)
+        {
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (users[i].Username == username && users[i].Password == password)
+                {
+                    return users[i].Role; 
+                }
+            }
+            return null;
+        }
+    }
+}
+

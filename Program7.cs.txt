@@ -1,0 +1,119 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace storemanasys
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<store> products = new List<store>();
+
+            while (true)
+            {
+                Console.WriteLine("\n--- Products Management System ---");
+                Console.WriteLine("1. Add Product");
+                Console.WriteLine("2. Show Products");
+                Console.WriteLine("3. Total Store Worth");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice: ");
+                int choice = int.Parse(Console.ReadLine());
+
+                if (choice == 1)
+                {
+                  
+                    Console.Write("Enter ID: ");
+                    int id = int.Parse(Console.ReadLine());
+
+                    Console.Write("Enter Name: ");
+                    string name = Console.ReadLine();
+
+                    Console.Write("Enter Price: ");
+                    int price = int.Parse(Console.ReadLine());
+
+                    Console.Write("Enter Category (number): ");
+                    int category = int.Parse(Console.ReadLine());
+
+                    Console.Write("Enter Brand Name: ");
+                    string brandname = Console.ReadLine();
+
+                    Console.Write("Enter Country: ");
+                    string country = Console.ReadLine();
+
+                    store s = new store();
+                    s.addproduct(id, name, price, category, brandname, country);
+                    products.Add(s);
+
+                    Console.WriteLine("Product added successfully!");
+                }
+                else if (choice == 2)
+                {
+
+                    if (products.Count == 0)
+                    {
+                        Console.WriteLine("No products available.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n--- Product List ---");
+                        for (int i = 0; i < products.Count; i++)
+                        {
+                            products[i].showproduct();
+                        }
+                    }
+                }
+                else if (choice == 3)
+                {
+
+                    int totalWorth = 0;
+                    for (int i = 0; i < products.Count; i++)
+                    {
+                        totalWorth += products[i].price;
+                    }
+                    Console.WriteLine($"Total Store Worth = {totalWorth}");
+                }
+                else if (choice == 4)
+                {
+                    Console.WriteLine("Exiting program...");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice! Try again.");
+                }
+            }
+        }
+    }
+
+    class store
+    {
+        public int id;
+        public string name;
+        public int price;
+        public int catagory;
+        public string brandname;
+        public string country;
+
+        public void addproduct(int id, string name, int price, int catagory, string brandname, string country)
+        {
+            this.id = id;
+            this.name = name;
+            this.price = price;
+            this.catagory = catagory;
+            this.brandname = brandname;
+            this.country = country;
+        }
+
+        public void showproduct()
+        {
+            Console.WriteLine("You have the following product:");
+            Console.WriteLine($"ID: {id}");
+            Console.WriteLine($"Name: {name}");
+            Console.WriteLine($"Price: {price}");
+            Console.WriteLine($"Category: {catagory}");
+            Console.WriteLine($"Brand: {brandname}");
+            Console.WriteLine($"Country: {country}");
+            Console.WriteLine("---------------------------------");
+        }
+    }
+}
